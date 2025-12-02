@@ -16,6 +16,10 @@ const Login = () => {
 
     const onSubmitHandler = async (e) =>{
         e.preventDefault();
+        if (!backendUrl) {
+            toast.error("Backend URL is missing. Check environment variables.");
+            return;
+        }
         try{
             if(state === 'Login'){
                const {data} =await axios.post(backendUrl + '/api/user/login', {email, password})
@@ -43,8 +47,14 @@ const Login = () => {
             }
         }
         }catch(error){
-                toast.error(error.message)
-
+            console.error(error);
+            if (error.response) {
+                toast.error(error.response.data.message || "Server Error");
+            } else if (error.request) {
+                toast.error(`Network Error. Cannot connect to ${backendUrl}`);
+            } else {
+                toast.error(error.message);
+            }
         }
     }
 

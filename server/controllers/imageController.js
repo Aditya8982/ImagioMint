@@ -17,6 +17,9 @@ const generateImage = async (req , res)=>{
         const formData = new FormData()
         formData.append('prompt' , prompt)
 
+        console.log("Sending request to ClipDrop API...")
+        console.log("API Key present:", !!process.env.CLIPDROP_API)
+
         const {data} =  await axios.post('https://clipdrop-api.co/text-to-image/v1', formData, {
             headers: {
                 'x-api-key': process.env.CLIPDROP_API.trim(),
